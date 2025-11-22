@@ -1,1 +1,1 @@
-export { PrivilegeService } from "./privilege.service";
+export { PrivilegeService } from './privilege.service'

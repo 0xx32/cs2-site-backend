@@ -1,37 +1,38 @@
 {
-  "name": "cs2-backend-site",
-  "type": "module",
-  "scripts": {
-    "dev": "tsx watch src/main.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "migrate": "bun ./database/migrate.js",
-    "lint": "eslint .",
-    "format": "prettier . --write",
-    "pretty": "bun lint && bun format",
-    "seed:start": "bun tsx ./database/seeds/index.ts"
-  },
-  "dependencies": {
-    "@hono/node-server": "^1.19.6",
-    "@hono/zod-validator": "^0.7.4",
-    "@siberiacancode/fetches": "^1.13.1",
-    "dotenv": "^17.2.3",
-    "env-var": "^7.5.0",
-    "hono": "^4.10.4",
-    "ioredis": "^5.8.2",
-    "kysely": "^0.28.8",
-    "mysql2": "^3.15.3",
-    "zod": "^4.1.12"
-  },
-  "devDependencies": {
-    "@antfu/eslint-config": "^6.2.0",
-    "@types/node": "^20.19.24",
-    "eslint": "^9.38.0",
-    "eslint-plugin-format": "^1.0.2",
-    "eslint-plugin-perfectionist": "^4.15.1",
-    "kysely-codegen": "^0.19.0",
-    "prettier": "^3.6.2",
-    "tsx": "^4.20.6",
-    "typescript": "^5.8.3"
-  }
+	"name": "cs2-backend-site",
+	"type": "module",
+	"scripts": {
+		"dev": "tsx watch src/main.ts",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"migrate": "bun ./database/migrate.js",
+		"lint": "eslint .",
+		"format": "prettier . --write",
+		"pretty": "bun lint && bun format",
+		"seed:start": "bun tsx ./database/seeds/index.ts"
+	},
+	"dependencies": {
+		"@hono/node-server": "^1.19.6",
+		"@hono/zod-validator": "^0.7.4",
+		"@siberiacancode/fetches": "^1.13.1",
+		"dotenv": "^17.2.3",
+		"env-var": "^7.5.0",
+		"hono": "^4.10.4",
+		"ioredis": "^5.8.2",
+		"kysely": "^0.28.8",
+		"mysql2": "^3.15.3",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@0x32/prettier": "^1.0.2",
+		"@antfu/eslint-config": "^6.2.0",
+		"@types/node": "^20.19.24",
+		"eslint": "^9.38.0",
+		"eslint-plugin-format": "^1.0.2",
+		"eslint-plugin-perfectionist": "^4.15.1",
+		"kysely-codegen": "^0.19.0",
+		"prettier": "^3.6.2",
+		"tsx": "^4.20.6",
+		"typescript": "^5.8.3"
+	}
 }

@@ -1,3 +1,3 @@
-import { setup } from "./app";
+import { setup } from './app'
 
-setup();
+setup()

@@ -1,9 +1,9 @@
-import z from "zod";
+import z from 'zod'
 
 export const shopCheckoutBodySchema = z.object({
-  serverId: z.number(),
-  productId: z.number(),
-  productVariantId: z.number(),
-});
+	serverId: z.number(),
+	productId: z.number(),
+	productVariantId: z.number(),
+})
 
-export type CheckoutDto = z.infer<typeof shopCheckoutBodySchema>;
+export type CheckoutDto = z.infer<typeof shopCheckoutBodySchema>

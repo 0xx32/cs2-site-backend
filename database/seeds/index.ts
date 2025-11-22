@@ -1,7 +1,7 @@
-import { seedPlayers } from "./players";
+import { seedPlayers } from './players'
 
 async function main() {
-  await seedPlayers(1);
+	await seedPlayers(1)
 }
 
-main();
+main()

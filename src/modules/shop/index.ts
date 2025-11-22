@@ -1,1 +1,1 @@
-export { shopController } from "./shop.controller";
+export { shopController } from './shop.controller'

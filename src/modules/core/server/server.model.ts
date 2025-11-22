@@ -1,3 +1,3 @@
-import type { NewServer } from "@database/types/schema";
+import type { NewServer } from '@database/types/schema'
 
-export type CreateServerDto = NewServer;
+export type CreateServerDto = NewServer

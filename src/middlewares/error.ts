@@ -1,15 +1,13 @@
-import type { Context } from "hono";
+import type { Context } from 'hono'
 
-import { ApiError, ApiErrorFactory } from "@/utils/exceptions/api-error";
+import { ApiError, ApiErrorFactory } from '@/utils/exceptions/api-error'
 
 export function errorMiddleware(error: unknown, c: Context) {
-  if (error instanceof ApiError) return c.json(error.toJSON(), error.status);
+	if (error instanceof ApiError) return c.json(error.toJSON(), error.status)
 
-  console.error("Unhandled error:", error);
+	console.error('Unhandled error:', error)
 
-  const fallbackError = ApiErrorFactory.InternalServerError(
-    "Internal Server Error",
-  );
+	const fallbackError = ApiErrorFactory.InternalServerError('Internal Server Error')
 
-  return c.json(fallbackError.toJSON(), fallbackError.status);
+	return c.json(fallbackError.toJSON(), fallbackError.status)
 }
