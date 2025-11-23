@@ -15,6 +15,7 @@ export type Database = {
 	users: UserTable
 	products: ProductsTable
 	product_categories: ProductCategoriesTable
+	privileges: PrivilegesTable
 } & PluginsTables
 
 export interface ServersTable {

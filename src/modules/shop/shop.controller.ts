@@ -22,8 +22,8 @@ shopController.post(
 		const body = ctx.req.valid('json')
 		const user = ctx.get('user')
 
-		const result = await ShopService.checkout(body, user)
+		await ShopService.proccesCheckout({ items: body }, user)
 
-		return ctx.json(result)
+		ctx.json({ success: true, message: 'OK' })
 	}
 )

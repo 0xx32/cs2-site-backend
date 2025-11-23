@@ -1,56 +1,37 @@
-import { db } from '@/db/client'
-import { ApiErrorFactory } from '@/utils/exceptions/api-error'
-import { parseSteamId } from '@/utils/helpers/steam-id'
+import { sql } from 'kysely'
 
-interface GivePrivilageParams {
-	serverId: number
-	steamId: string
-	group: string
-	durationDays: number
-	playerName: string
+import { db } from '@/db/client'
+import { DatabaseError } from '@/utils/exceptions/errors'
+
+interface CreatePrivilegeDto {
+	name: string
+	advantages: string[]
 }
 
-const givePrivilege = async ({
-	serverId,
-	steamId,
-	playerName,
-	group,
-	durationDays,
-}: GivePrivilageParams) => {
-	const { accountId } = parseSteamId(steamId)
-
-	const duration = durationDays * 24 * 60 * 60
-
+const createPrivilege = async (dto: CreatePrivilegeDto) => {
 	try {
-		const [result] = await db
-			.insertInto('vip_users')
+		await db
+			.insertInto('privileges')
 			.values({
-				account_id: accountId,
-				expires: Math.floor(Date.now() / 1000) + duration,
-				group,
-				name: playerName,
-				sid: serverId,
-				lastvisit: 0,
+				name: dto.name,
+				advantages: sql`${JSON.stringify(dto.advantages)}`,
 			})
-			.onDuplicateKeyUpdate((eb) => ({
-				expires: eb('expires', '+', duration),
-				name: eb.val(playerName),
-			}))
 			.execute()
-
-		if (result.numInsertedOrUpdatedRows === 1n) {
-			return { success: true, message: 'Привилегия создана' }
-		} else if (result.numInsertedOrUpdatedRows === 2n) {
-			return { success: true, message: 'Привилегия продлена' }
-		} else {
-			return { success: false, message: 'Привилегия не изменена' }
-		}
 	} catch (error) {
 		console.error(error)
-		throw ApiErrorFactory.InternalServerError('Ошибка при выдаче или обновлении привилегии')
+
+		throw new DatabaseError('Ошибка при создании привилегии')
+	}
+}
+const removePrivilege = async (id: number) => {
+	try {
+		await db.deleteFrom('privileges').where('id', '=', id).execute()
+	} catch {
+		throw new DatabaseError('Ошибка при удалении привилегии')
 	}
 }
 
 export const PrivilegeService = {
-	givePrivilege,
+	createPrivilege,
+	removePrivilege,
 }

@@ -6,7 +6,7 @@ import { db } from '@/db/client'
 import { ApiErrorFactory } from '@/utils/exceptions/api-error'
 
 export const getProductById = (id: Product['id']) =>
-	db.selectFrom('products').where('id', '=', id).selectAll().execute()
+	db.selectFrom('products').where('id', '=', id).selectAll().executeTakeFirst()
 
 export const getAllProducts = () => db.selectFrom('products').selectAll().execute()
 
