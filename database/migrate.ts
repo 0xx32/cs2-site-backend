@@ -4,8 +4,9 @@ import { FileMigrationProvider, Kysely, Migrator, MysqlDialect } from 'kysely'
 import { createPool } from 'mysql2'
 import { promises as fs } from 'node:fs'
 import path from 'node:path' // ←←← ВОТ ЭТО ГЛАВНОЕ! Импортируем настоящий path
-import { fileURLToPath } from 'node:url' // для ESM
+import process from 'node:process'
 import 'dotenv/config'
+import { fileURLToPath } from 'node:url' // для ESM
 
 // Для ESM: __dirname и __filename
 const __filename = fileURLToPath(import.meta.url)
@@ -33,6 +34,7 @@ async function migrateToLatest() {
 
 	results?.forEach((it) => {
 		if (it.status === 'Success') {
+			// eslint-disable-next-line no-console
 			console.log(`migration "${it.migrationName}" was executed successfully`)
 		} else if (it.status === 'Error') {
 			console.error(`failed to execute migration "${it.migrationName}"`)

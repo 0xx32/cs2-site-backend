@@ -49,6 +49,7 @@ export async function seedPlayers(serverId: number = 1) {
 	try {
 		await seedDBClient.insertInto(tableName).values(players).execute()
 
+		// eslint-disable-next-line no-console
 		console.log(`Успешно вставлено 30 игроков в ${tableName}`)
 	} catch (error) {
 		console.error('Ошибка при вставке:', error)

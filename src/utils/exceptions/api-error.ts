@@ -39,7 +39,7 @@ export const ApiErrorFactory = {
 	NotFound(message = 'Not Found') {
 		return new ApiError(message, 404)
 	},
-	InternalServerError(message = 'Internal Server Error') {
+	InternalServerError(message = 'Internal Server Error2') {
 		return new ApiError(message, 500)
 	},
 	create(message: string, status: ContentfulStatusCode) {

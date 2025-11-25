@@ -1,29 +1,20 @@
-import { zValidator } from '@hono/zod-validator'
 import { Hono } from 'hono'
 
 import { authMiddleware } from '@/middlewares/auth'
 
-import { shopCheckoutBodySchema } from './shop.model'
-import { getShopItems, ShopService } from './shop.service'
+import { getShopProducts, purchaseItems } from './shop.service'
 
 export const shopController = new Hono()
 
-shopController.get('/items', async (ctx) => {
-	const result = await getShopItems()
-
+shopController.get('/products', async (ctx) => {
+	const result = await getShopProducts()
 	return ctx.json(result)
 })
 
-shopController.post(
-	'/checkout',
-	authMiddleware,
-	zValidator('json', shopCheckoutBodySchema),
-	async (ctx) => {
-		const body = ctx.req.valid('json')
-		const user = ctx.get('user')
+shopController.post('/purchase', authMiddleware, async (ctx) => {
+	const user = ctx.get('user')
 
-		await ShopService.proccesCheckout({ items: body }, user)
+	const result = await purchaseItems(user)
 
-		ctx.json({ success: true, message: 'OK' })
-	}
-)
+	return ctx.json({ result })
+})

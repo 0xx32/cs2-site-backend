@@ -12,9 +12,9 @@ import { apiRoute } from './routes'
 export const setup = () => {
 	const app = new Hono()
 
-	app.onError(errorMiddleware)
+	app.onError((err, c) => errorMiddleware(err, c))
 
-	app.use('*', cors({ origin: [APP_CONFIG.FRONTEND_URL], credentials: true }))
+	app.use('/api/*', cors({ origin: [APP_CONFIG.FRONTEND_URL], credentials: true }))
 
 	app.route('/api', apiRoute)
 
@@ -24,6 +24,7 @@ export const setup = () => {
 			port: APP_CONFIG.PORT,
 		},
 		async (info) => {
+			// eslint-disable-next-line no-console
 			console.log(`Server is running on http://localhost:${info.port}`)
 		}
 	)

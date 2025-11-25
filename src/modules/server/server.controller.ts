@@ -8,3 +8,8 @@ serverController.get('/', async (ctx) => {
 	const servers = await ServerService.getAllServers()
 	return ctx.json(servers)
 })
+
+serverController.get('/monitoring', async (ctx) => {
+	const servers = await ServerService.getAllServersInfo()
+	return ctx.json(servers)
+})

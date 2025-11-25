@@ -17,20 +17,20 @@ export const authMiddleware = async (ctx: Context<{ Variables: AuthVariables }>,
 	const sessionId = getCookie(ctx, 'session')
 
 	if (!sessionId) {
-		return ctx.json(ApiErrorFactory.Unauthorized().toJSON())
+		throw ApiErrorFactory.Unauthorized('Invalid session')
 	}
 
 	const session = await SessionService.getSession(sessionId)
 
 	if (!session || !session.userId) {
 		setCookie(ctx, 'session', '')
-		return ctx.json(ApiErrorFactory.Unauthorized('Invalid session').toJSON())
+		throw ApiErrorFactory.Unauthorized('Invalid session')
 	}
 
 	const user = await UserService.getById(session.userId as UUID)
 
 	if (!user) {
-		return ctx.json(ApiErrorFactory.Unauthorized('Invalid session').toJSON())
+		throw ApiErrorFactory.Unauthorized('Invalid user')
 	}
 
 	ctx.set('user', user)

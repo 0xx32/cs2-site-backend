@@ -1,10 +1,13 @@
 import type { Context } from 'hono'
+import type { HTTPResponseError } from 'hono/types'
 
 import { ApiError, ApiErrorFactory } from '@/utils/exceptions/api-error'
 import { DatabaseError } from '@/utils/exceptions/errors'
 
-export function errorMiddleware(error: unknown, c: Context) {
-	if (error instanceof ApiError) return c.json(error.toJSON(), error.status)
+export function errorMiddleware(error: Error | HTTPResponseError, c: Context) {
+	if (error instanceof ApiError) {
+		return c.json(error.toJSON(), error.status)
+	}
 
 	if (error instanceof DatabaseError) {
 		const err = ApiErrorFactory.InternalServerError(error.message)

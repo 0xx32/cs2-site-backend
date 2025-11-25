@@ -1,11 +1,4 @@
-import type {
-	ColumnType,
-	Generated,
-	Insertable,
-	JSONColumnType,
-	Selectable,
-	Updateable,
-} from 'kysely'
+import type { ColumnType, Generated, Insertable, Selectable, Updateable } from 'kysely'
 import type { UUID } from 'node:crypto'
 
 import type { PluginsTables } from './external-plugins-schema'
@@ -14,8 +7,9 @@ export type Database = {
 	servers: ServersTable
 	users: UserTable
 	products: ProductsTable
-	product_categories: ProductCategoriesTable
-	privileges: PrivilegesTable
+	product_variants: ProductVariantsTable
+	user_purchases: UserPurchaseTable
+	user_cart_items: UserCartItemsTable
 } & PluginsTables
 
 export interface ServersTable {
@@ -43,38 +37,48 @@ export type NewUser = Insertable<UserTable>
 export type UserUpdate = Updateable<UserTable>
 export type UserRoles = 'USER' | 'ADMIN' | 'MODERATOR' | 'ROOT'
 
-export interface ProductCategoriesTable {
-	id: Generated<number>
-	name: string
-}
-export type ProductCategory = Selectable<ProductCategoriesTable>
-export type NewProductCategory = Insertable<ProductCategoriesTable>
-
 export interface ProductsTable {
 	id: Generated<number>
 	name: string
-	categoryId: number
-	discountPercent?: number
-	imageUrl?: string
-	description?: string
+	description: string | null
+	type: 'privilege' | 'character_model'
 	advantages: string[]
-	isActive: boolean
-	variants: JSONColumnType<
-		{
-			id: number
-			label: string
-			price: number
-			days: number
-		}[]
-	>
+	discount_percent: number | null
+	privilege_name: string | null
+	character_model_id: number | null
+	enabled: Generated<boolean>
 	created_at: Generated<Date>
+	updated_at: Generated<Date | null>
 }
 export type Product = Selectable<ProductsTable>
 export type NewProduct = Insertable<ProductsTable>
 export type UpdatedProduct = Updateable<ProductsTable>
 
-export interface PrivilegesTable {
+export interface ProductVariantsTable {
 	id: Generated<number>
-	name: string
-	advantages: string[]
+	product_id: Product['id']
+	price: number
+	duration_label: string
+	duration_days: number
+	created_at: Generated<Date>
+	updated_at: Generated<Date | null>
 }
+export type ProductVariant = Selectable<ProductVariantsTable>
+
+export interface UserPurchaseTable {
+	id: Generated<number>
+	user_id: UserTable['id']
+	product_variant_id: ProductVariantsTable['id']
+	server_id: number
+	amount: number
+	createdAt: Generated<Date>
+}
+
+export interface UserCartItemsTable {
+	id: Generated<number>
+	user_id: UserTable['id']
+	server_id: ServersTable['id']
+	product_variant_id: ProductVariantsTable['id']
+	createdAt: Generated<Date>
+}
+export type CartItem = Selectable<UserCartItemsTable>
